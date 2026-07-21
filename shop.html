@@ -95,10 +95,11 @@
   if(items.length === 0){
     emptyState.style.display = 'block';
   } else {
-    items.forEach(p=>{
+    items.forEach((p,i)=>{
       const card = document.createElement('div');
-      card.className = 'card';
+      card.className = 'card reveal';
       card.style.setProperty('--acc', catColor(p.cat));
+      card.style.transitionDelay = (i % 4) * 0.08 + 's';
       card.innerHTML = `
         <a class="thumb" href="product.html?id=${p.id}">
           <span class="tag-pill">${p.tag}</span>
@@ -115,6 +116,7 @@
       grid.appendChild(card);
     });
   }
+  initRevealOnScroll();
 
   grid.addEventListener('click', e=>{
     const btn = e.target.closest('[data-add]');

@@ -143,52 +143,33 @@ function initNavToggle(){
   });
 }
 
-/* ---------- site-wide fluid scroll ----------
-   Eases the page's real scroll position toward the wheel's target instead of
-   jumping instantly, for a smoother "fluid" feel. Left alone on touch devices
-   (native momentum scroll already feels right) and reduced-motion setups. */
-function initSmoothScroll(){
-  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  if(window.matchMedia('(pointer: coarse)').matches) return;
+/* ---------- fade-in-on-scroll reveals ----------
+   Content fades and lifts gently into place as it enters the viewport, instead
+   of just popping in. Call again after appending dynamic content (product
+   grids etc.) so newly-added .reveal elements get picked up. */
+function initRevealOnScroll(){
+  const els = document.querySelectorAll('.reveal:not(.in)');
+  if(!els.length) return;
 
-  let current = window.scrollY;
-  let target = window.scrollY;
-  let animating = false;
-
-  function maxScroll(){
-    return Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    els.forEach(el=>el.classList.add('in'));
+    return;
   }
 
-  function tick(){
-    current += (target - current) * 0.12;
-    if(Math.abs(target - current) < 0.4){
-      current = target;
-      window.scrollTo(0, current);
-      animating = false;
-      return;
-    }
-    window.scrollTo(0, current);
-    requestAnimationFrame(tick);
-  }
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold:0.1, rootMargin:'0px 0px -60px 0px' });
 
-  window.addEventListener('wheel', (e)=>{
-    if(e.ctrlKey) return; // let pinch-zoom / ctrl+wheel behave natively
-    e.preventDefault();
-    target = Math.min(maxScroll(), Math.max(0, target + e.deltaY));
-    if(!animating){ animating = true; requestAnimationFrame(tick); }
-  }, { passive:false });
-
-  // stay in sync if the user scrolls via keyboard, scrollbar drag, or anchor jumps
-  window.addEventListener('scroll', ()=>{
-    if(!animating){ target = window.scrollY; current = window.scrollY; }
-  });
-  window.addEventListener('resize', ()=>{
-    target = Math.min(target, maxScroll());
-  });
+  els.forEach(el=>io.observe(el));
 }
 
 document.addEventListener('DOMContentLoaded', ()=>{
   updateCartBadge();
   initNavToggle();
-  initSmoothScroll();
+  initRevealOnScroll();
 });

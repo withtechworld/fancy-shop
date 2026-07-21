@@ -127,6 +127,21 @@
   .rod::before{left:-7px}
   .rod::after{right:-7px}
 
+  /* tagline that fills the rail while it's still empty, fading away as the
+     items land so it never overlaps the fully-hung rack */
+  .rail-tagline{
+    position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;pointer-events:none;transition:opacity .4s ease;
+  }
+  .rail-tagline span{
+    font-family:'Fraunces',serif;font-style:italic;font-weight:400;
+    font-size:clamp(1.7rem,3vw,2.5rem);color:var(--muted);opacity:.6;
+  }
+  .rail-tagline small{
+    display:block;margin-top:12px;font-family:'Syncopate',sans-serif;font-size:.6rem;
+    letter-spacing:.34em;text-transform:uppercase;color:var(--muted);opacity:.45;
+  }
+
   /* each hanging tag — the string+hook sit fixed on the rail immediately (so the rail
      never looks empty at rest); only the .card itself flies in on scroll */
   .tag{
@@ -257,7 +272,7 @@
     .rail-panel .tag-wrap{display:flex;gap:16px;overflow-x:auto;padding:0 4px 16px;scroll-snap-type:x mandatory}
     .tag{position:relative !important;left:auto !important;top:auto !important;flex:0 0 auto;scroll-snap-align:center;margin-top:var(--len,50px)}
     .tag .card{transform:none !important;opacity:1 !important}
-    .scroll-hint,.ticks{display:none}
+    .scroll-hint,.ticks,.rail-tagline{display:none}
     .cat-grid{grid-template-columns:1fr}
   }
 
@@ -307,6 +322,10 @@
 
       <!-- RIGHT: the rail -->
       <div class="rail-panel">
+        <div class="rail-tagline" id="railTagline">
+          <span>Hang tight.</span>
+          <small>Curating your rail</small>
+        </div>
         <div class="rod"></div>
         <div class="tag-wrap" id="tagWrap"></div>
       </div>
@@ -323,7 +342,7 @@
       <h2>Shop by category</h2>
     </div>
     <div class="cat-grid">
-      <a class="cat-card" href="shop.html?cat=fancy">
+      <a class="cat-card reveal" href="shop.html?cat=fancy">
         <img src="https://images.unsplash.com/photo-1629118639934-2b241503956c?auto=format&fit=crop&w=800&q=80" alt="Fancy accessories" loading="lazy" />
         <div class="content">
           <div class="label" style="color:var(--gold)">Fancy</div>
@@ -332,7 +351,7 @@
           <a href="shop.html?cat=fancy">Explore Fancy →</a>
         </div>
       </a>
-      <a class="cat-card" href="shop.html?cat=sports">
+      <a class="cat-card reveal" href="shop.html?cat=sports" style="transition-delay:.12s">
         <img src="https://images.unsplash.com/photo-1571008887538-b36bb32f4571?auto=format&fit=crop&w=800&q=80" alt="Sports gear" loading="lazy" />
         <div class="content">
           <div class="label" style="color:var(--teal)">Sports</div>
@@ -341,7 +360,7 @@
           <a href="shop.html?cat=sports" style="color:var(--teal)">Explore Sports →</a>
         </div>
       </a>
-      <a class="cat-card" href="shop.html?cat=seasonal">
+      <a class="cat-card reveal" href="shop.html?cat=seasonal" style="transition-delay:.24s">
         <img src="https://images.unsplash.com/photo-1602521879046-b994fcd56190?auto=format&fit=crop&w=800&q=80" alt="Seasonal finds" loading="lazy" />
         <div class="content">
           <div class="label" style="color:var(--signal)">Seasonal</div>
@@ -443,6 +462,7 @@
   const shopCta = document.getElementById('shopCta');
   const shopLabel = document.getElementById('shopLabel');
   const ticksBox = document.getElementById('ticks');
+  const railTagline = document.getElementById('railTagline');
 
   let selected = null;
 
@@ -537,6 +557,7 @@
     }
     cur += (target - cur) * 0.09;
     document.documentElement.style.setProperty('--scroll', cur);
+    railTagline.style.opacity = Math.max(0, 1 - cur * 1.6);
 
     ITEMS.forEach((it,i)=>{
       const s = START + i*STEP;
@@ -570,12 +591,13 @@
   /* ---------- featured products (real store data) ---------- */
   const featGrid = document.getElementById('featGrid');
   const FEATURED = ['fa-01','sp-01','se-05','fa-03','sp-05','se-02'];
-  FEATURED.forEach(id=>{
+  FEATURED.forEach((id,i)=>{
     const p = findProduct(id);
     if(!p) return;
     const card = document.createElement('div');
-    card.className = 'card';
+    card.className = 'card reveal';
     card.style.setProperty('--acc', catColor(p.cat));
+    card.style.transitionDelay = (i % 3) * 0.1 + 's';
     card.innerHTML = `
       <a class="thumb" href="product.html?id=${p.id}">
         <span class="tag-pill">${p.tag}</span>
@@ -591,6 +613,7 @@
       </div>`;
     featGrid.appendChild(card);
   });
+  initRevealOnScroll();
   featGrid.addEventListener('click', e=>{
     const btn = e.target.closest('[data-add]');
     if(!btn) return;

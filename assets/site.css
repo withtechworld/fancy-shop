@@ -17,6 +17,13 @@
 
 html{scroll-behavior:smooth}
 
+/* fade-in-on-scroll reveal */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
+.reveal.in{opacity:1;transform:translateY(0)}
+@media (prefers-reduced-motion:reduce){
+  .reveal{opacity:1;transform:none;transition:none}
+}
+
 body{
   background:
     radial-gradient(120% 60% at 78% 0%, rgba(194,68,122,.10), transparent 60%),
