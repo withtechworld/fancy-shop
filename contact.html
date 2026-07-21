@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Contact — Luxe &amp; Active</title>
+<link rel="stylesheet" href="assets/site.css" />
+</head>
+<body>
+
+  <header class="site-nav">
+    <a class="brand" href="index.html">LUXE <span>&amp;</span> ACTIVE</a>
+    <nav class="nav-links">
+      <a href="shop.html?cat=all">Shop</a>
+      <a href="shop.html?cat=fancy">Fancy</a>
+      <a href="shop.html?cat=sports">Sports</a>
+      <a href="shop.html?cat=seasonal">Seasonal</a>
+      <a href="about.html">About</a>
+      <a href="contact.html" class="active">Contact</a>
+    </nav>
+    <div class="nav-right">
+      <a class="cart-link" href="cart.html">Cart <span class="cart-badge">0</span></a>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <div class="page-head">
+        <div class="label">Get In Touch</div>
+        <h1>Contact Us</h1>
+        <p>Questions about an order, a product, or just want to say hello — reach out below.</p>
+      </div>
+
+      <div class="contact-layout">
+        <form id="contactForm">
+          <div class="form-grid">
+            <div class="field">
+              <label for="cname">Name</label>
+              <input type="text" id="cname" required placeholder="Your name">
+            </div>
+            <div class="field">
+              <label for="cemail">Email</label>
+              <input type="email" id="cemail" required placeholder="you@email.com">
+            </div>
+            <div class="field full">
+              <label for="csubject">Subject</label>
+              <input type="text" id="csubject" required placeholder="What's this about?">
+            </div>
+            <div class="field full">
+              <label for="cmessage">Message</label>
+              <textarea id="cmessage" required placeholder="Tell us more…"></textarea>
+            </div>
+          </div>
+          <button class="btn btn-primary" type="submit">Send Message</button>
+          <div class="form-msg" id="formMsg">Thanks — we'll get back to you within one business day.</div>
+        </form>
+
+        <aside class="store-info">
+          <div class="row">
+            <div class="label">Store Address</div>
+            <div>14 Rail Street<br>London, SW1A 1AA<br>United Kingdom</div>
+          </div>
+          <div class="row">
+            <div class="label">Opening Hours</div>
+            <div>Mon – Fri: 9:00 – 18:00<br>Saturday: 10:00 – 17:00<br>Sunday: Closed</div>
+          </div>
+          <div class="row">
+            <div class="label">Email</div>
+            <div>hello@luxeandactive.example</div>
+          </div>
+          <div class="row">
+            <div class="label">Phone</div>
+            <div>+44 20 1234 5678</div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div>
+        <div class="brand small">LUXE <span>&amp;</span> ACTIVE</div>
+        <p>Fancy pieces, performance gear, and seasonal finds — curated under one roof.</p>
+      </div>
+      <div>
+        <h4>Shop</h4>
+        <a href="shop.html?cat=fancy">Fancy</a>
+        <a href="shop.html?cat=sports">Sports</a>
+        <a href="shop.html?cat=seasonal">Seasonal</a>
+      </div>
+      <div>
+        <h4>Store</h4>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="cart.html">Cart</a>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 Luxe &amp; Active. All rights reserved. This is a demo storefront. Note: this address, phone, and email are placeholders — update them for the real store.</div>
+  </footer>
+
+<script src="assets/store.js"></script>
+<script>
+  document.getElementById('contactForm').addEventListener('submit', e=>{
+    e.preventDefault();
+    document.getElementById('formMsg').classList.add('show');
+    e.target.reset();
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Order Confirmed — Luxe &amp; Active</title>
+<link rel="stylesheet" href="assets/site.css" />
+</head>
+<body>
+
+  <header class="site-nav">
+    <a class="brand" href="index.html">LUXE <span>&amp;</span> ACTIVE</a>
+    <nav class="nav-links">
+      <a href="shop.html?cat=all">Shop</a>
+      <a href="shop.html?cat=fancy">Fancy</a>
+      <a href="shop.html?cat=sports">Sports</a>
+      <a href="shop.html?cat=seasonal">Seasonal</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="nav-right">
+      <a class="cart-link" href="cart.html">Cart <span class="cart-badge">0</span></a>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <div id="confirmBody"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div>
+        <div class="brand small">LUXE <span>&amp;</span> ACTIVE</div>
+        <p>Fancy pieces, performance gear, and seasonal finds — curated under one roof.</p>
+      </div>
+      <div>
+        <h4>Shop</h4>
+        <a href="shop.html?cat=fancy">Fancy</a>
+        <a href="shop.html?cat=sports">Sports</a>
+        <a href="shop.html?cat=seasonal">Seasonal</a>
+      </div>
+      <div>
+        <h4>Store</h4>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="cart.html">Cart</a>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 Luxe &amp; Active. All rights reserved. This is a demo storefront.</div>
+  </footer>
+
+<script src="assets/store.js"></script>
+<script>
+  const body = document.getElementById('confirmBody');
+  let order = null;
+  try{ order = JSON.parse(sessionStorage.getItem('la_last_order')); }catch(e){}
+
+  if(!order){
+    body.innerHTML = `
+      <div class="confirm-box">
+        <div class="confirm-icon">✓</div>
+        <h1>No recent order found</h1>
+        <p style="color:var(--muted);margin-top:10px">Looks like you navigated here directly. Head back to the shop to place an order.</p>
+        <a class="btn btn-primary" style="margin-top:30px" href="shop.html?cat=all">Browse the Shop</a>
+      </div>`;
+  } else {
+    const itemsHtml = order.lines.map(l => `
+      <div class="srow"><span>${l.name} × ${l.qty}</span><span>${money(l.price * l.qty)}</span></div>
+    `).join('');
+
+    body.innerHTML = `
+      <div class="confirm-box">
+        <div class="confirm-icon">✓</div>
+        <h1>Thank you${order.name ? ', ' + order.name.split(' ')[0] : ''}.</h1>
+        <p style="color:var(--muted)">Your order has been placed. A confirmation has been sent to <strong style="color:var(--bone)">${order.email}</strong>.</p>
+        <div class="order-no">ORDER ${order.orderNo}</div>
+        <div class="confirm-summary">
+          ${itemsHtml}
+          <div class="srow" style="border-top:1px solid var(--line);margin-top:8px;padding-top:14px"><span>Subtotal</span><span>${money(order.subtotal)}</span></div>
+          <div class="srow"><span>Shipping</span><span>${order.shipping === 0 ? 'Free' : money(order.shipping)}</span></div>
+          <div class="srow" style="color:var(--bone);font-weight:600"><span>Total</span><span>${money(order.total)}</span></div>
+        </div>
+        <p style="color:var(--muted);font-size:.85rem">Estimated delivery: 3–5 business days.</p>
+        <a class="btn btn-primary" style="margin-top:30px" href="shop.html?cat=all">Continue Shopping</a>
+      </div>`;
+    sessionStorage.removeItem('la_last_order');
+  }
+</script>
+</body>
+</html>

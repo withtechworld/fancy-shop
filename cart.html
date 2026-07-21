@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Your Cart — Luxe &amp; Active</title>
+<link rel="stylesheet" href="assets/site.css" />
+</head>
+<body>
+
+  <header class="site-nav">
+    <a class="brand" href="index.html">LUXE <span>&amp;</span> ACTIVE</a>
+    <nav class="nav-links">
+      <a href="shop.html?cat=all">Shop</a>
+      <a href="shop.html?cat=fancy">Fancy</a>
+      <a href="shop.html?cat=sports">Sports</a>
+      <a href="shop.html?cat=seasonal">Seasonal</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="nav-right">
+      <a class="cart-link" href="cart.html">Cart <span class="cart-badge">0</span></a>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <div class="page-head">
+        <div class="label">Review &amp; Confirm</div>
+        <h1>Your Cart</h1>
+      </div>
+
+      <div id="cartBody"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div>
+        <div class="brand small">LUXE <span>&amp;</span> ACTIVE</div>
+        <p>Fancy pieces, performance gear, and seasonal finds — curated under one roof.</p>
+      </div>
+      <div>
+        <h4>Shop</h4>
+        <a href="shop.html?cat=fancy">Fancy</a>
+        <a href="shop.html?cat=sports">Sports</a>
+        <a href="shop.html?cat=seasonal">Seasonal</a>
+      </div>
+      <div>
+        <h4>Store</h4>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="cart.html">Cart</a>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 Luxe &amp; Active. All rights reserved. This is a demo storefront.</div>
+  </footer>
+
+<script src="assets/store.js"></script>
+<script>
+  const cartBody = document.getElementById('cartBody');
+
+  function render(){
+    const lines = cartLines();
+
+    if(lines.length === 0){
+      cartBody.innerHTML = `
+        <div class="empty-state">
+          <div class="label">Your Cart Is Empty</div>
+          <p style="margin-top:10px;margin-bottom:26px">Nothing on the rail yet — go find something you like.</p>
+          <a class="btn btn-primary" href="shop.html?cat=all">Browse the Shop</a>
+        </div>`;
+      return;
+    }
+
+    const subtotal = cartSubtotal();
+    const shipping = shippingCost(subtotal);
+    const total = subtotal + shipping;
+
+    cartBody.innerHTML = `
+      <div class="cart-layout">
+        <div class="cart-lines" id="lines"></div>
+        <aside class="summary">
+          <h3>Order Summary</h3>
+          <div class="srow"><span>Subtotal</span><span>${money(subtotal)}</span></div>
+          <div class="srow"><span>Shipping</span><span>${shipping === 0 ? 'Free' : money(shipping)}</span></div>
+          <div class="srow total"><span>Total</span><span>${money(total)}</span></div>
+          <a class="btn btn-primary btn-block" href="checkout.html">Proceed to Checkout</a>
+          <div class="hint">${subtotal < 75 ? `Add ${money(75 - subtotal)} more for free shipping.` : 'Your order qualifies for free shipping.'}</div>
+        </aside>
+      </div>`;
+
+    const linesBox = document.getElementById('lines');
+    lines.forEach(l=>{
+      const row = document.createElement('div');
+      row.className = 'cart-line';
+      row.innerHTML = `
+        <div class="thumb"><img src="${l.img}" alt="${l.name}"></div>
+        <div>
+          <div class="name">${l.name}</div>
+          <div class="cat">${l.tag}</div>
+        </div>
+        <div class="right">
+          <div class="line-total">${money(l.price * l.qty)}</div>
+          <div class="qty-stepper">
+            <button type="button" data-dec="${l.id}">−</button>
+            <span>${l.qty}</span>
+            <button type="button" data-inc="${l.id}">+</button>
+          </div>
+          <button type="button" class="remove" data-remove="${l.id}">Remove</button>
+        </div>`;
+      linesBox.appendChild(row);
+    });
+  }
+
+  cartBody.addEventListener('click', e=>{
+    const inc = e.target.closest('[data-inc]');
+    const dec = e.target.closest('[data-dec]');
+    const rem = e.target.closest('[data-remove]');
+    if(inc){
+      const id = inc.dataset.inc;
+      const line = getCart().find(l=>l.id===id);
+      setQty(id, (line ? line.qty : 0) + 1);
+      render();
+    } else if(dec){
+      const id = dec.dataset.dec;
+      const line = getCart().find(l=>l.id===id);
+      setQty(id, (line ? line.qty : 1) - 1);
+      render();
+    } else if(rem){
+      removeFromCart(rem.dataset.remove);
+      render();
+    }
+  });
+
+  render();
+</script>
+</body>
+</html>

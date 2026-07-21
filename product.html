@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Product — Luxe &amp; Active</title>
+<link rel="stylesheet" href="assets/site.css" />
+</head>
+<body>
+
+  <header class="site-nav">
+    <a class="brand" href="index.html">LUXE <span>&amp;</span> ACTIVE</a>
+    <nav class="nav-links">
+      <a href="shop.html?cat=all">Shop</a>
+      <a href="shop.html?cat=fancy">Fancy</a>
+      <a href="shop.html?cat=sports">Sports</a>
+      <a href="shop.html?cat=seasonal">Seasonal</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="nav-right">
+      <a class="cart-link" href="cart.html">Cart <span class="cart-badge">0</span></a>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap" id="productWrap">
+      <!-- filled by JS -->
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div>
+        <div class="brand small">LUXE <span>&amp;</span> ACTIVE</div>
+        <p>Fancy pieces, performance gear, and seasonal finds — curated under one roof.</p>
+      </div>
+      <div>
+        <h4>Shop</h4>
+        <a href="shop.html?cat=fancy">Fancy</a>
+        <a href="shop.html?cat=sports">Sports</a>
+        <a href="shop.html?cat=seasonal">Seasonal</a>
+      </div>
+      <div>
+        <h4>Store</h4>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="cart.html">Cart</a>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 Luxe &amp; Active. All rights reserved. This is a demo storefront.</div>
+  </footer>
+
+<script src="assets/store.js"></script>
+<script>
+  const params = new URLSearchParams(location.search);
+  const id = params.get('id');
+  const product = findProduct(id);
+  const wrap = document.getElementById('productWrap');
+
+  if(!product){
+    wrap.innerHTML = `
+      <div class="empty-state">
+        <div class="label">Product Not Found</div>
+        <p style="margin-top:10px;margin-bottom:26px">That item isn't in the catalogue — it may have sold out or moved.</p>
+        <a class="btn btn-primary" href="shop.html?cat=all">Back to Shop</a>
+      </div>`;
+  } else {
+    document.title = product.name + ' — Luxe & Active';
+
+    wrap.innerHTML = `
+      <div class="product-detail">
+        <div class="thumb"><img src="${product.img}" alt="${product.name}"></div>
+        <div class="info">
+          <span class="tag-pill">${product.tag}</span>
+          <h1>${product.name}</h1>
+          <div class="price">${money(product.price)}</div>
+          <p class="desc">${product.desc}</p>
+          <div class="qty-row">
+            <div class="qty-stepper">
+              <button type="button" id="qtyDown">−</button>
+              <span id="qtyVal">1</span>
+              <button type="button" id="qtyUp">+</button>
+            </div>
+            <button class="btn btn-primary" id="addBtn">Add to Cart</button>
+          </div>
+          <div class="added-msg" id="addedMsg">Added to your cart.</div>
+        </div>
+      </div>
+
+      <div class="related">
+        <h2>You may also like</h2>
+        <div class="grid" id="relatedGrid"></div>
+      </div>
+    `;
+
+    let qty = 1;
+    const qtyVal = document.getElementById('qtyVal');
+    document.getElementById('qtyUp').addEventListener('click', ()=>{ qty++; qtyVal.textContent = qty; });
+    document.getElementById('qtyDown').addEventListener('click', ()=>{ if(qty>1){ qty--; qtyVal.textContent = qty; } });
+
+    const addedMsg = document.getElementById('addedMsg');
+    document.getElementById('addBtn').addEventListener('click', ()=>{
+      addToCart(product.id, qty);
+      addedMsg.classList.add('show');
+      setTimeout(()=> addedMsg.classList.remove('show'), 2200);
+    });
+
+    const related = PRODUCTS.filter(p=> p.cat === product.cat && p.id !== product.id).slice(0,4);
+    const relatedGrid = document.getElementById('relatedGrid');
+    related.forEach(p=>{
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <a class="thumb" href="product.html?id=${p.id}">
+          <span class="tag-pill">${p.tag}</span>
+          <img src="${p.img}" alt="${p.name}" loading="lazy">
+        </a>
+        <div class="body">
+          <div class="name">${p.name}</div>
+          <div class="price">${money(p.price)}</div>
+          <div class="row">
+            <a class="btn btn-ghost" href="product.html?id=${p.id}">View</a>
+            <button class="btn btn-primary" data-add="${p.id}">Add</button>
+          </div>
+        </div>`;
+      relatedGrid.appendChild(card);
+    });
+    relatedGrid.addEventListener('click', e=>{
+      const btn = e.target.closest('[data-add]');
+      if(!btn) return;
+      addToCart(btn.dataset.add, 1);
+      btn.textContent = 'Added ✓';
+      setTimeout(()=>{ btn.textContent = 'Add'; }, 1200);
+    });
+  }
+</script>
+</body>
+</html>

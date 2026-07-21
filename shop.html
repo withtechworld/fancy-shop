@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Shop — Luxe &amp; Active</title>
+<link rel="stylesheet" href="assets/site.css" />
+</head>
+<body>
+
+  <header class="site-nav">
+    <a class="brand" href="index.html">LUXE <span>&amp;</span> ACTIVE</a>
+    <nav class="nav-links">
+      <a href="shop.html?cat=all" class="active">Shop</a>
+      <a href="shop.html?cat=fancy">Fancy</a>
+      <a href="shop.html?cat=sports">Sports</a>
+      <a href="shop.html?cat=seasonal">Seasonal</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="nav-right">
+      <a class="cart-link" href="cart.html">Cart <span class="cart-badge">0</span></a>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <div class="page-head">
+        <div class="label">The Full Collection</div>
+        <h1 id="pageTitle">Shop All</h1>
+        <p id="pageSub">Fancy pieces, performance gear, and seasonal finds — all in one place.</p>
+      </div>
+
+      <div class="tabs" id="tabs">
+        <a class="tab" data-cat="all" href="shop.html?cat=all">All</a>
+        <a class="tab" data-cat="fancy" href="shop.html?cat=fancy">Fancy</a>
+        <a class="tab" data-cat="sports" href="shop.html?cat=sports">Sports</a>
+        <a class="tab" data-cat="seasonal" href="shop.html?cat=seasonal">Seasonal</a>
+      </div>
+
+      <div class="grid" id="grid"></div>
+      <div class="empty-state" id="emptyState" style="display:none">
+        <div class="label">Nothing here yet</div>
+        <p style="margin-top:10px">This category is empty right now — check back soon.</p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div>
+        <div class="brand small">LUXE <span>&amp;</span> ACTIVE</div>
+        <p>Fancy pieces, performance gear, and seasonal finds — curated under one roof.</p>
+      </div>
+      <div>
+        <h4>Shop</h4>
+        <a href="shop.html?cat=fancy">Fancy</a>
+        <a href="shop.html?cat=sports">Sports</a>
+        <a href="shop.html?cat=seasonal">Seasonal</a>
+      </div>
+      <div>
+        <h4>Store</h4>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="cart.html">Cart</a>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 Luxe &amp; Active. All rights reserved. This is a demo storefront.</div>
+  </footer>
+
+<script src="assets/store.js"></script>
+<script>
+  const TITLES = {
+    all:{ h1:'Shop All', sub:'Fancy pieces, performance gear, and seasonal finds — all in one place.' },
+    fancy:{ h1:'Fancy', sub:'Watches, jewellery, bags and eyewear for the days that call for more.' },
+    sports:{ h1:'Sports', sub:'Footwear, kit and equipment built for tempo, terrain, and everything between.' },
+    seasonal:{ h1:'Seasonal', sub:'Gifts and seasonal edits, refreshed every season and gone before the next.' },
+  };
+
+  const params = new URLSearchParams(location.search);
+  const cat = params.get('cat') || 'all';
+
+  document.getElementById('pageTitle').textContent = (TITLES[cat] || TITLES.all).h1;
+  document.getElementById('pageSub').textContent = (TITLES[cat] || TITLES.all).sub;
+
+  document.querySelectorAll('.tab').forEach(tab=>{
+    tab.classList.toggle('active', tab.dataset.cat === cat);
+  });
+
+  const grid = document.getElementById('grid');
+  const emptyState = document.getElementById('emptyState');
+  const items = byCategory(cat);
+
+  if(items.length === 0){
+    emptyState.style.display = 'block';
+  } else {
+    items.forEach(p=>{
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <a class="thumb" href="product.html?id=${p.id}">
+          <span class="tag-pill">${p.tag}</span>
+          <img src="${p.img}" alt="${p.name}" loading="lazy">
+        </a>
+        <div class="body">
+          <div class="name">${p.name}</div>
+          <div class="price">${money(p.price)}</div>
+          <div class="row">
+            <a class="btn btn-ghost" href="product.html?id=${p.id}">View</a>
+            <button class="btn btn-primary" data-add="${p.id}">Add</button>
+          </div>
+        </div>`;
+      grid.appendChild(card);
+    });
+  }
+
+  grid.addEventListener('click', e=>{
+    const btn = e.target.closest('[data-add]');
+    if(!btn) return;
+    addToCart(btn.dataset.add, 1);
+    btn.textContent = 'Added ✓';
+    setTimeout(()=>{ btn.textContent = 'Add'; }, 1200);
+  });
+</script>
+</body>
+</html>
