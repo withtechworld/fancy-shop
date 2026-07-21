@@ -2,15 +2,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Inter:wght@300;400;500;600&display=swap');
 
 :root{
-  --ink:#0a0a0c;
-  --ink-2:#111116;
-  --panel:#17171d;
-  --bone:#f4f2ee;
-  --muted:#8b8b93;
-  --line:rgba(255,255,255,.10);
-  --gold:#e8c877;
-  --teal:#12e6b8;
-  --signal:#ff2d6b;
+  --ink:#fef8fb;
+  --ink-2:#fdedf3;
+  --panel:#fff4f9;
+  --bone:#33202b;
+  --muted:#93707f;
+  --line:rgba(51,32,43,.12);
+  --gold:#c2447a;
+  --teal:#2a9d8f;
+  --signal:#ef476f;
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
@@ -19,8 +19,8 @@ html{scroll-behavior:smooth}
 
 body{
   background:
-    radial-gradient(120% 60% at 78% 0%, rgba(232,200,119,.06), transparent 60%),
-    radial-gradient(90% 60% at 15% 100%, rgba(18,230,184,.05), transparent 55%),
+    radial-gradient(120% 60% at 78% 0%, rgba(194,68,122,.10), transparent 60%),
+    radial-gradient(90% 60% at 15% 100%, rgba(42,157,143,.07), transparent 55%),
     var(--ink);
   color:var(--bone);
   font-family:'Inter',sans-serif;
@@ -44,7 +44,7 @@ em{font-style:italic;color:var(--gold)}
 .site-nav{
   position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;
   gap:20px;padding:20px clamp(20px,5vw,64px);
-  background:rgba(10,10,12,.72);backdrop-filter:blur(14px);
+  background:rgba(255,248,251,.78);backdrop-filter:blur(14px);
   border-bottom:1px solid var(--line);
 }
 .brand{
@@ -73,7 +73,7 @@ em{font-style:italic;color:var(--gold)}
 .cart-link:hover{border-color:var(--gold)}
 .cart-badge{
   display:none;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 4px;
-  border-radius:50%;background:var(--gold);color:#141008;font-size:.62rem;font-weight:700;
+  border-radius:50%;background:var(--gold);color:#fff;font-size:.62rem;font-weight:700;
 }
 
 /* mobile menu toggle */
@@ -95,10 +95,10 @@ em{font-style:italic;color:var(--gold)}
   cursor:pointer;transition:box-shadow .25s ease,transform .2s ease,border-color .2s ease,background .2s ease;
 }
 .btn-primary{
-  background:linear-gradient(90deg,var(--gold),#f4dd9e);color:#141008;
-  box-shadow:0 14px 34px rgba(232,200,119,.22);
+  background:linear-gradient(90deg,var(--gold),#a8306a);color:#fff;
+  box-shadow:0 14px 34px rgba(194,68,122,.24);
 }
-.btn-primary:hover{box-shadow:0 16px 46px rgba(232,200,119,.42);transform:translateY(-1px)}
+.btn-primary:hover{box-shadow:0 16px 46px rgba(194,68,122,.4);transform:translateY(-1px)}
 .btn-ghost{background:transparent;border-color:var(--line);color:var(--bone)}
 .btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
 .btn:disabled{opacity:.4;cursor:not-allowed;box-shadow:none;transform:none}
@@ -121,24 +121,24 @@ main{flex:1}
   color:var(--muted);transition:all .2s ease;
 }
 .tab:hover{color:var(--bone);border-color:var(--bone)}
-.tab.active{background:var(--gold);border-color:var(--gold);color:#141008}
+.tab.active{background:var(--gold);border-color:var(--gold);color:#fff}
 
 /* ---------------- product grid & cards ---------------- */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:26px;padding-bottom:80px}
 .card{
   --acc:var(--gold);
-  background:linear-gradient(160deg,rgba(255,255,255,.05),rgba(255,255,255,.015));
+  background:linear-gradient(160deg,#fff,var(--panel));
   border:1px solid var(--line);border-radius:18px;overflow:hidden;
   transition:border-color .25s ease,transform .25s ease,box-shadow .25s ease;
   display:flex;flex-direction:column;
 }
-.card:hover{border-color:var(--acc);transform:translateY(-4px);box-shadow:0 22px 50px rgba(0,0,0,.45),0 0 30px -12px var(--acc)}
+.card:hover{border-color:var(--acc);transform:translateY(-4px);box-shadow:0 22px 44px rgba(51,32,43,.14),0 0 26px -10px var(--acc)}
 .card .thumb{position:relative;aspect-ratio:1/1;overflow:hidden;background:var(--ink-2)}
 .card .thumb img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
 .card:hover .thumb img{transform:scale(1.06)}
 .card .thumb .tag-pill{
-  position:absolute;top:12px;left:12px;background:rgba(10,10,12,.72);backdrop-filter:blur(6px);
-  border:1px solid var(--line);border-radius:20px;padding:5px 12px;
+  position:absolute;top:12px;left:12px;background:rgba(35,20,28,.78);backdrop-filter:blur(6px);
+  border:1px solid rgba(255,255,255,.14);border-radius:20px;padding:5px 12px;
   font-family:'Syncopate',sans-serif;font-size:.52rem;letter-spacing:.14em;text-transform:uppercase;color:var(--acc);
 }
 .card .body{padding:18px 18px 20px;display:flex;flex-direction:column;gap:10px;flex:1}
@@ -214,8 +214,8 @@ legend{font-family:'Fraunces',serif;font-size:1.2rem;margin-bottom:18px;padding:
 /* ---------------- confirmation ---------------- */
 .confirm-box{max-width:640px;margin:0 auto;padding:90px 0;text-align:center}
 .confirm-icon{
-  width:74px;height:74px;border-radius:50%;background:radial-gradient(circle,var(--teal),transparent 70%);
-  display:flex;align-items:center;justify-content:center;margin:0 auto 28px;font-size:1.8rem;color:var(--ink);
+  width:74px;height:74px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;margin:0 auto 28px;font-size:1.8rem;color:#fff;
   background-color:var(--teal);
 }
 .confirm-box h1{font-size:clamp(1.8rem,4vw,2.6rem);margin-bottom:14px}
@@ -266,7 +266,7 @@ legend{font-family:'Fraunces',serif;font-size:1.2rem;margin-bottom:18px;padding:
   .nav-links{
     position:absolute;top:100%;left:0;right:0;
     flex-direction:column;align-items:stretch;gap:0;
-    background:rgba(10,10,12,.97);backdrop-filter:blur(14px);
+    background:rgba(255,248,251,.97);backdrop-filter:blur(14px);
     max-height:0;overflow:hidden;opacity:0;pointer-events:none;
     transition:max-height .3s ease,opacity .25s ease;
   }

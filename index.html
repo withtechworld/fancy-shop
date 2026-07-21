@@ -9,13 +9,13 @@
 <style>
   :root{
     --scroll:0;
-    --ink:#0a0a0c;
-    --ink-2:#111116;
-    --bone:#f4f2ee;
-    --muted:#8b8b93;
-    --gold:#e8c877;      /* luxe */
-    --teal:#12e6b8;      /* performance */
-    --signal:#ff2d6b;    /* fancy / live */
+    --ink:#fef8fb;
+    --ink-2:#fdedf3;
+    --bone:#33202b;
+    --muted:#93707f;
+    --gold:#c2447a;      /* luxe */
+    --teal:#2a9d8f;      /* performance */
+    --signal:#ef476f;    /* fancy / live */
     --rail:#3a3a42;
   }
 
@@ -23,17 +23,11 @@
 
   body{
     background:
-      radial-gradient(120% 80% at 78% 0%, rgba(232,200,119,.06), transparent 60%),
-      radial-gradient(90% 70% at 15% 100%, rgba(18,230,184,.05), transparent 55%),
+      radial-gradient(120% 80% at 78% 0%, rgba(194,68,122,.12), transparent 60%),
+      radial-gradient(90% 70% at 15% 100%, rgba(42,157,143,.08), transparent 55%),
       var(--ink);
     overflow-x:hidden;
     display:block; /* override shared flex shell for the scroll-trick hero */
-  }
-
-  /* fine grain / vignette so the black doesn't read flat */
-  .hero-scroll::after{
-    content:"";position:fixed;inset:0;pointer-events:none;z-index:60;
-    box-shadow:inset 0 0 220px 40px rgba(0,0,0,.65);
   }
 
   .hero-scroll{ position:relative; height:300vh; } /* scroll runway for the assembly */
@@ -43,14 +37,14 @@
   }
 
   /* overlay nav on the hero */
-  .site-nav.overlay{position:fixed;left:0;right:0;top:0;background:rgba(10,10,12,.55);z-index:70}
+  .site-nav.overlay{position:fixed;left:0;right:0;top:0;background:rgba(255,248,251,.7);z-index:70}
 
   /* ---- kinetic background word ---- */
   .ghost{
     position:absolute;top:50%;left:50%;
     font-family:'Syncopate',sans-serif;font-weight:700;
     font-size:clamp(5rem,20vw,20rem);letter-spacing:-.02em;
-    color:transparent;-webkit-text-stroke:1px rgba(232,200,119,.10);
+    color:transparent;-webkit-text-stroke:1px rgba(194,68,122,.12);
     white-space:nowrap;z-index:0;user-select:none;
     transform:translate(-50%,-50%) translateX(calc((var(--scroll) - .5) * 26vw));
   }
@@ -102,15 +96,15 @@
   .shop-cta{
     margin-top:30px;display:inline-flex;align-items:center;gap:14px;
     padding:15px 30px;border-radius:40px;border:1px solid transparent;
-    background:linear-gradient(90deg,var(--gold),#f4dd9e);
-    color:#141008;font-family:'Syncopate',sans-serif;font-weight:700;
+    background:linear-gradient(90deg,var(--gold),#a8306a);
+    color:#fff;font-family:'Syncopate',sans-serif;font-weight:700;
     font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;
     cursor:pointer;opacity:0;transform:translateY(14px);pointer-events:none;
     transition:opacity .4s ease,transform .4s ease,box-shadow .3s ease;
   }
   .shop-cta.show{opacity:1;transform:translateY(0);pointer-events:auto;
-    box-shadow:0 14px 40px rgba(232,200,119,.28)}
-  .shop-cta:hover{box-shadow:0 14px 50px rgba(232,200,119,.5)}
+    box-shadow:0 14px 40px rgba(194,68,122,.3)}
+  .shop-cta:hover{box-shadow:0 14px 50px rgba(194,68,122,.5)}
   .shop-cta .arw{transition:transform .25s ease}
   .shop-cta:hover .arw{transform:translateX(5px)}
 
@@ -143,21 +137,21 @@
   /* the string from rod to tag — always visible, marks the hanger's place on the rail */
   .tag .string{
     position:absolute;left:50%;bottom:100%;width:1px;
-    height:var(--len,60px);background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.28));
+    height:var(--len,60px);background:linear-gradient(180deg,rgba(51,32,43,.05),rgba(51,32,43,.38));
     transform:translateX(-.5px);
   }
   .tag .hole{
     position:absolute;top:9px;left:50%;transform:translateX(-50%);
     width:14px;height:14px;border-radius:50%;
-    background:var(--ink);border:2px solid rgba(255,255,255,.35);
-    box-shadow:inset 0 1px 2px rgba(0,0,0,.8);z-index:2;
+    background:rgba(51,32,43,.16);border:2px solid rgba(51,32,43,.22);
+    box-shadow:inset 0 1px 2px rgba(51,32,43,.3);z-index:2;
   }
   .tag .card{
     position:absolute;inset:0;border-radius:14px;padding:16px 14px 14px;
-    background:linear-gradient(160deg,rgba(255,255,255,.055),rgba(255,255,255,.015));
+    background:linear-gradient(160deg,rgba(255,255,255,.85),rgba(255,255,255,.6));
     backdrop-filter:blur(8px);
-    border:1px solid rgba(255,255,255,.10);
-    box-shadow:0 18px 40px rgba(0,0,0,.55);
+    border:1px solid rgba(51,32,43,.10);
+    box-shadow:0 18px 40px rgba(194,68,122,.16);
     display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
     overflow:hidden;opacity:0;will-change:transform;
     transition:border-color .3s ease,box-shadow .3s ease;
@@ -188,10 +182,10 @@
   }
   /* hover + selected states */
   .tag:hover .card{border-color:var(--acc,var(--gold));
-    box-shadow:0 22px 55px rgba(0,0,0,.6),0 0 26px -6px var(--acc,var(--gold))}
+    box-shadow:0 22px 45px rgba(51,32,43,.18),0 0 26px -6px var(--acc,var(--gold))}
   .tag.selected .card{
     border-color:var(--acc,var(--gold));
-    box-shadow:0 22px 60px rgba(0,0,0,.6),0 0 0 1px var(--acc,var(--gold)),0 0 34px -4px var(--acc,var(--gold));
+    box-shadow:0 22px 50px rgba(51,32,43,.18),0 0 0 1px var(--acc,var(--gold)),0 0 34px -4px var(--acc,var(--gold));
   }
   .tag.selected .card::after{
     content:"✓ ON THE LIST";position:absolute;top:9px;left:0;right:0;text-align:center;
@@ -215,7 +209,7 @@
   .ticks{
     position:absolute;right:26px;bottom:26px;z-index:6;display:flex;gap:7px;
   }
-  .ticks i{width:22px;height:2px;border-radius:2px;background:rgba(255,255,255,.15);transition:background .3s}
+  .ticks i{width:22px;height:2px;border-radius:2px;background:rgba(51,32,43,.15);transition:background .3s}
   .ticks i.on{background:var(--gold)}
 
   /* ================= below-the-fold sections ================= */
@@ -228,7 +222,7 @@
   .cat-grid{max-width:1240px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
   .cat-card{
     position:relative;border-radius:20px;overflow:hidden;aspect-ratio:3/4;
-    border:1px solid rgba(255,255,255,.10);
+    border:1px solid var(--line);
   }
   .cat-card img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
   .cat-card:hover img{transform:scale(1.07)}
@@ -246,7 +240,7 @@
 
   .newsletter{max-width:640px;margin:0 auto;text-align:center}
   .newsletter form{display:flex;gap:12px;margin-top:26px}
-  .newsletter input{flex:1;background:var(--ink-2);border:1px solid rgba(255,255,255,.14);border-radius:30px;padding:15px 22px;color:var(--bone);font-family:'Inter',sans-serif}
+  .newsletter input{flex:1;background:var(--ink-2);border:1px solid var(--line);border-radius:30px;padding:15px 22px;color:var(--bone);font-family:'Inter',sans-serif}
   .newsletter input:focus{outline:none;border-color:var(--gold)}
   .newsletter .note{margin-top:14px;font-size:.78rem;color:var(--muted)}
 
@@ -500,7 +494,7 @@
     selected = i;
     setHeadline(it.line);
     shopLabel.textContent = 'Shop ' + it.name;
-    shopCta.style.setProperty('background', `linear-gradient(90deg, ${it.acc}, #f4dd9e)`);
+    shopCta.style.setProperty('background', `linear-gradient(90deg, ${it.acc}, #a8306a)`);
     shopCta.classList.add('show');
   }
   shopCta.addEventListener('click',()=>{
