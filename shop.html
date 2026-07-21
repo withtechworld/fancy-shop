@@ -19,7 +19,8 @@
       <a href="contact.html">Contact</a>
     </nav>
     <div class="nav-right">
-      <a class="cart-link" href="cart.html">Cart <span class="cart-badge">0</span></a>
+      <a class="cart-link" href="cart.html"><span class="cart-text">Cart</span> <span class="cart-badge">0</span></a>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
     </div>
   </header>
 
@@ -97,6 +98,7 @@
     items.forEach(p=>{
       const card = document.createElement('div');
       card.className = 'card';
+      card.style.setProperty('--acc', catColor(p.cat));
       card.innerHTML = `
         <a class="thumb" href="product.html?id=${p.id}">
           <span class="tag-pill">${p.tag}</span>

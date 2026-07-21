@@ -19,7 +19,8 @@
       <a href="contact.html">Contact</a>
     </nav>
     <div class="nav-right">
-      <a class="cart-link" href="cart.html">Cart <span class="cart-badge">0</span></a>
+      <a class="cart-link" href="cart.html"><span class="cart-text">Cart</span> <span class="cart-badge">0</span></a>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
     </div>
   </header>
 
@@ -71,8 +72,8 @@
     wrap.innerHTML = `
       <div class="product-detail">
         <div class="thumb"><img src="${product.img}" alt="${product.name}"></div>
-        <div class="info">
-          <span class="tag-pill">${product.tag}</span>
+        <div class="info" style="--acc:${catColor(product.cat)}">
+          <span class="tag-pill" style="color:var(--acc)">${product.tag}</span>
           <h1>${product.name}</h1>
           <div class="price">${money(product.price)}</div>
           <p class="desc">${product.desc}</p>
@@ -111,6 +112,7 @@
     related.forEach(p=>{
       const card = document.createElement('div');
       card.className = 'card';
+      card.style.setProperty('--acc', catColor(p.cat));
       card.innerHTML = `
         <a class="thumb" href="product.html?id=${p.id}">
           <span class="tag-pill">${p.tag}</span>

@@ -53,10 +53,16 @@ em{font-style:italic;color:var(--gold)}
 .brand span{color:var(--gold)}
 .nav-links{display:flex;align-items:center;gap:clamp(14px,2.4vw,32px);flex-wrap:wrap}
 .nav-links a{
-  font-family:'Syncopate',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:.16em;
+  position:relative;font-family:'Syncopate',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:.16em;
   text-transform:uppercase;color:var(--muted);transition:color .2s ease;white-space:nowrap;
+  padding:4px 0;
+}
+.nav-links a::after{
+  content:"";position:absolute;left:0;right:100%;bottom:-4px;height:1px;background:var(--gold);
+  transition:right .25s ease;
 }
 .nav-links a:hover,.nav-links a.active{color:var(--bone)}
+.nav-links a:hover::after,.nav-links a.active::after{right:0}
 .nav-right{display:flex;align-items:center;gap:18px}
 .cart-link{
   position:relative;display:flex;align-items:center;gap:8px;
@@ -69,6 +75,17 @@ em{font-style:italic;color:var(--gold)}
   display:none;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 4px;
   border-radius:50%;background:var(--gold);color:#141008;font-size:.62rem;font-weight:700;
 }
+
+/* mobile menu toggle */
+.nav-toggle{
+  display:none;flex-direction:column;justify-content:center;gap:5px;
+  width:36px;height:36px;background:none;border:none;cursor:pointer;padding:0;
+}
+.nav-toggle span{width:22px;height:2px;background:var(--bone);border-radius:2px;
+  transition:transform .25s ease,opacity .2s ease;}
+.nav-toggle.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-toggle.open span:nth-child(2){opacity:0}
+.nav-toggle.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
 
 /* ---------------- buttons ---------------- */
 .btn{
@@ -109,19 +126,20 @@ main{flex:1}
 /* ---------------- product grid & cards ---------------- */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:26px;padding-bottom:80px}
 .card{
+  --acc:var(--gold);
   background:linear-gradient(160deg,rgba(255,255,255,.05),rgba(255,255,255,.015));
   border:1px solid var(--line);border-radius:18px;overflow:hidden;
   transition:border-color .25s ease,transform .25s ease,box-shadow .25s ease;
   display:flex;flex-direction:column;
 }
-.card:hover{border-color:var(--gold);transform:translateY(-4px);box-shadow:0 22px 50px rgba(0,0,0,.45)}
+.card:hover{border-color:var(--acc);transform:translateY(-4px);box-shadow:0 22px 50px rgba(0,0,0,.45),0 0 30px -12px var(--acc)}
 .card .thumb{position:relative;aspect-ratio:1/1;overflow:hidden;background:var(--ink-2)}
 .card .thumb img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
 .card:hover .thumb img{transform:scale(1.06)}
 .card .thumb .tag-pill{
   position:absolute;top:12px;left:12px;background:rgba(10,10,12,.72);backdrop-filter:blur(6px);
   border:1px solid var(--line);border-radius:20px;padding:5px 12px;
-  font-family:'Syncopate',sans-serif;font-size:.52rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);
+  font-family:'Syncopate',sans-serif;font-size:.52rem;letter-spacing:.14em;text-transform:uppercase;color:var(--acc);
 }
 .card .body{padding:18px 18px 20px;display:flex;flex-direction:column;gap:10px;flex:1}
 .card .name{font-family:'Fraunces',serif;font-size:1.05rem}
@@ -239,7 +257,22 @@ legend{font-family:'Fraunces',serif;font-size:1.2rem;margin-bottom:18px;padding:
 
 /* ---------------- responsive ---------------- */
 @media (max-width:860px){
-  .nav-links{display:none}
+  .site-nav{position:sticky;padding:16px 20px;gap:12px}
+  .brand{flex-shrink:0;font-size:.72rem}
+  .nav-right{flex-shrink:0;gap:10px}
+  .cart-link{padding:8px 12px}
+  .cart-text{display:none}
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:absolute;top:100%;left:0;right:0;
+    flex-direction:column;align-items:stretch;gap:0;
+    background:rgba(10,10,12,.97);backdrop-filter:blur(14px);
+    max-height:0;overflow:hidden;opacity:0;pointer-events:none;
+    transition:max-height .3s ease,opacity .25s ease;
+  }
+  .nav-links.open{max-height:360px;opacity:1;pointer-events:auto;border-bottom:1px solid var(--line)}
+  .nav-links a{padding:16px 20px;border-top:1px solid var(--line)}
+  .nav-links a::after{display:none}
   .product-detail,.cart-layout,.checkout-layout,.contact-layout{grid-template-columns:1fr}
   .form-grid{grid-template-columns:1fr}
   .footer-grid{grid-template-columns:1fr;gap:30px}
